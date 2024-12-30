@@ -1,0 +1,28 @@
+<div id="container" contenteditable="true">paste your image here</div>
+<script>
+  const container = document.getElementById("container");
+
+  container.addEventListener("paste", function () {
+    event.preventDefault();
+    let file = event.clipboardData.files[0];
+    console.log("file :>> ", file);
+    if (!file) return;
+
+    showImg(file);
+  });
+
+  const showImg = (file) => {
+    // 读取文件并转化为base64格式
+    let fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+
+    fileReader.onload = function () {
+      if (/^image\/[jpeg|png|gif]/.test(file.type)) {
+        let img = document.createElement("img");
+        img.src = fileReader.result;
+        img.style.width = "500px";
+        container.append(img);
+      }
+    };
+  };
+</script>
